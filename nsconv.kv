@@ -8,14 +8,18 @@
         text: root.capt
         size_hint_y: None
         height: self.texture_size[1]
-    TextInput
+    TextInput:
         id: ti
         font_size: 14
+        text: root.inp
 
-<LabelRes@BoxLayout>
+<B2Label@Label+Border2>
+<B3Label@Label+Border3>
+<LabelRes@GridLayout+Border>
     capt: lbl_capt.text
     out: lbl_res.text
-    orientation: 'vertical'
+#    orientation: 'vertical'
+    rows: 2
     padding: dp(5)
     Label:
         id: lbl_capt
@@ -24,13 +28,17 @@
         height: self.texture_size[1]
     Label:
         id: lbl_res
-#        canvas:
-#            Color:
-#                rgb: (.5, .5, .5)
-#            Rectangle:
-#                size: self.size
-#                pos: self.pos
+        canvas.before:
+            Color:
+                rgb: (.5, .5, .5)
+            Rectangle:
+                size: self.size
+                pos: self.pos
         text: root.out
+        text_size: self.size[0] - dp(5), self.size[1] - dp(5)
+        valign: 'top'
+        color: 1,1,0,1
+        bold: True
 
 <CToggButt@ToggleButton>
     group: root.group
@@ -113,6 +121,7 @@
         Button:
             id: butt_clear
             text: 'Очистить'
+            on_press: root.inp = ''
         CToggButt:
             id: butt_ascii
             text: 'ASCII -> ' + str(root.val_outsys)
