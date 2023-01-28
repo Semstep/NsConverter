@@ -1,0 +1,165 @@
+<CaptTextInput@BoxLayout>
+    capt: lbl.text
+    inp: ti.text
+    orientation: 'vertical'
+    padding: dp(5)
+    Label:
+        id: lbl
+        text: root.capt
+        size_hint_y: None
+        height: self.texture_size[1]
+    TextInput
+        id: ti
+        font_size: 14
+
+<LabelRes@BoxLayout>
+    capt: lbl_capt.text
+    res: lbl_res.text
+    orientation: 'vertical'
+    padding: dp(5)
+    Label:
+        id: lbl_capt
+        text: root.capt
+        size_hint_y: None
+        height: self.texture_size[1]
+    Label:
+        id: lbl_res
+        canvas:
+            Color:
+                rgb: (.5, .5, .5)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        text: root.res
+
+<CToggButt@ToggleButton>
+    group: root.group
+    value: root.value
+    allow_no_selection: False
+#    on_press: app.root.tgbutt_pressed(self, self.group, self.text)
+    on_press: value = self.value
+
+<ToggButtGroup@BoxLayout>
+    id: tbg
+    orientation:'vertical'
+    group: root.group
+    capt: lbl.text
+    val: 0
+    Label:
+        id: lbl
+        text: root.capt
+        size_hint_y: None
+        height: self.texture_size[1]
+    BoxLayout:
+        orientation:'horizontal'
+        CToggButt:
+            id: tb_bin
+            text: 'BIN'
+            group: root.group
+            val: 2
+            on_state: root.val = self.val
+        CToggButt:
+            id: tb_oct
+            text: 'OCT'
+            group: root.group
+            val: 8
+            on_state: root.val = self.val
+        CToggButt:
+            id: tb_dec
+            text: 'DEC'
+            group: root.group
+            val: 10
+            on_state: root.val = self.val
+        CToggButt:
+            id: tb_hex
+            text: 'HEX'
+            group: root.group
+            val: 16
+            on_state: root.val = self.val
+
+#---------------------------------------------------------------------------------------------------------
+<NsConv>
+    butt_ascii: butt_ascii
+    butt_clear: butt_clear
+    tbg_from: tbg_from
+    tbg_to: tbg_to
+    inp: cti.inp
+    val1: tbg_from.val
+    val2: tbg_to.val
+    canvas:
+        Color:
+            rgb: (0,0,.2)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    orientation: 'vertical'
+    padding: dp(5)
+    spacing: dp(5)
+    outsys_name: 'Outsys'
+    CaptTextInput:
+        id: cti
+        capt: 'Исходное число'
+        inp: root.inp
+    LabelRes:
+        capt: 'Результат'
+        res: ''
+    BoxLayout:
+        canvas:
+            Color:
+                rgb: (1,1,1)
+            Line:
+                rectangle: (self.x, self.y, self.width, self.height)
+        orientation: 'horizontal'
+        size_hint_y: .4
+        Button:
+            id: butt_clear
+            text: 'Очистить'
+        CToggButt:
+            id: butt_ascii
+            text: 'ASCII -> ' + root.outsys_name
+            group: 'inpsys'
+            val: 0xFFFF
+            on_state: root.val1 = self.val
+    ToggButtGroup:
+        id: tbg_from
+        capt: 'Из'
+        group: 'inpsys'
+        val: root.val1
+
+    ToggButtGroup:
+        id: tbg_to
+        capt: 'В'
+        group: 'outsys'
+        val: root.val2
+
+#--------------------------------------------------------------------
+
+<Border@Widget>
+    canvas:
+        Color:
+            rgb: (1, 1, 0)
+        Line:
+            rectangle: (self.x, self.y, self.width, self.height)
+
+<Border2@Widget>
+    canvas:
+        Color:
+            rgb: (0,1,1)
+        Line:
+            rectangle: (self.x+1, self.y+1, self.width-2, self.height-2)
+
+<Border3@Widget>
+    canvas:
+        Color:
+            rgb: (1,0,1)
+        Line:
+            rectangle: (self.x+1, self.y+1, self.width-2, self.height-2)
+
+<Delim@Widget>
+    canvas:
+        Color:
+            rgb: (.3,.3,.3)
+        Line:
+            points: (self.x+1, self.y+1, self.width-2, self.y+1)
+    size: 200, 2
+#    height: self.minimum_height
