@@ -14,7 +14,7 @@
 
 <LabelRes@BoxLayout>
     capt: lbl_capt.text
-    res: lbl_res.text
+    out: lbl_res.text
     orientation: 'vertical'
     padding: dp(5)
     Label:
@@ -24,13 +24,13 @@
         height: self.texture_size[1]
     Label:
         id: lbl_res
-        canvas:
-            Color:
-                rgb: (.5, .5, .5)
-            Rectangle:
-                size: self.size
-                pos: self.pos
-        text: root.res
+#        canvas:
+#            Color:
+#                rgb: (.5, .5, .5)
+#            Rectangle:
+#                size: self.size
+#                pos: self.pos
+        text: root.out
 
 <CToggButt@ToggleButton>
     group: root.group
@@ -76,16 +76,14 @@
             group: root.group
             val: 16
             on_state: root.val = self.val
-
 #---------------------------------------------------------------------------------------------------------
 <NsConv>
     butt_ascii: butt_ascii
     butt_clear: butt_clear
-    tbg_from: tbg_from
-    tbg_to: tbg_to
     inp: cti.inp
-    val1: tbg_from.val
-    val2: tbg_to.val
+    out: outres.out
+    val_inpsys: tbg_from.val
+    val_outsys: tbg_to.val
     canvas:
         Color:
             rgb: (0,0,.2)
@@ -101,8 +99,9 @@
         capt: 'Исходное число'
         inp: root.inp
     LabelRes:
+        id: outres
         capt: 'Результат'
-        res: ''
+        out: root.out
     BoxLayout:
         canvas:
             Color:
@@ -116,21 +115,21 @@
             text: 'Очистить'
         CToggButt:
             id: butt_ascii
-            text: 'ASCII -> ' + root.outsys_name
+            text: 'ASCII -> ' + str(root.val_outsys)
             group: 'inpsys'
             val: 0xFFFF
-            on_state: root.val1 = self.val
+            on_state: root.val_inpsys = self.val
     ToggButtGroup:
         id: tbg_from
         capt: 'Из'
         group: 'inpsys'
-        val: root.val1
+        val: root.val_inpsys
 
     ToggButtGroup:
         id: tbg_to
         capt: 'В'
         group: 'outsys'
-        val: root.val2
+        val: root.val_outsys
 
 #--------------------------------------------------------------------
 

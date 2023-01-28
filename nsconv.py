@@ -18,12 +18,6 @@ def showdic(dic):
         print(f'{k}: {v}')
 
 
-class ToggButtGroup:
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        showdic(self.ids)
-
-
 class NsConv(BoxLayout):
     # ! Лучше было сделать слежение за изменением значения в тогглах, чем каждый раз проверять активный и апдейтить
     # класс
@@ -31,13 +25,12 @@ class NsConv(BoxLayout):
     tb_inp_lst = []  # тут лежат объекты CToggButt, доступны все свойства ToggleButton
     tb_out_lst = []
     inp = StringProperty()
+    out = StringProperty()
     tbg_values = {'BIN': 2, 'OCT': 8, 'DEC': 10, 'HEX': 16}
     tbg_from = ObjectProperty()
     tbg_to = ObjectProperty()
-    inpsysval: int
-    outsysval: int
-    val1 = NumericProperty()
-    val2 = NumericProperty()
+    val_inpsys = NumericProperty()
+    val_outsys = NumericProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -49,36 +42,37 @@ class NsConv(BoxLayout):
         self.tb_inp_lst[2].state = 'down'
         self.tb_out_lst[0].state = 'down'
 
-    def tgbutt_pressed(self, instance, grp, capt):
-        if instance.disabled:
-            return
-        hdrstr = f'{"*" * 5} {grp}: {capt} {"*" * 5}'
-        print(hdrstr)
-        for b in self.tb_inp_lst:
-            print(f'{b.text} state is {b.state}')
-        print('-' * len(hdrstr))
-
     def on_inp(self, instance, text):
         maxdig = conv.get_max_dig(text)
         for i, b in enumerate(self.tb_inp_lst):
-            # print(f'{i}: {b.val}')
-            if maxdig >= b.val:
+            if maxdig >= b.val:  # входное число не может быть представлено в выбранной системе
+                                # Например, 102 не может быть двоичным а G шестнадцатиричным
                 if b.state == 'down':
                     b.state = 'normal'
-                    if i + 1 < len(self.tb_inp_lst):
+                    if i + 1 < len(self.tb_inp_lst):  # активирую следующую за неактивной кнопку
                         self.tb_inp_lst[i + 1].state = 'down'
                 b.disabled = True
             else:
                 if all([b.disabled for b in self.tb_inp_lst[:-1]]):
                     self.tb_inp_lst[-1].state = 'down'
                 b.disabled = False
+        self.convert()
+        # self.out = self.inp
 
-    def on_val1(self, *args):
-        print(f'value changes on {args[1]}')
+    def convert(self):
+        # print(f'Convert {self.inp} <{self.val_inpsys}> --> <{self.val_outsys}>')
+        if self.inp:
+            self.out = conv.transform(self.inp, self.val_inpsys, self.val_outsys)
+        else:
+            self.out = ''
 
-    def on_val2(self, *args):
-        print(f'value changes on {args[1]}')
+    def on_val_inpsys(self, *args):
+        # print('a')
+        self.convert()
 
+    def on_val_outsys(self, *args):
+        # print('b')
+        self.convert()
 
 class NsConvApp(App):
     title = 'Конвертер систем счисления'
