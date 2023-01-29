@@ -5,7 +5,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ObjectProperty, StringProperty, NumericProperty
 
 import conv_s as conv
-
+from kivy.effects.opacityscroll import OpacityScrollEffect
 from kivy.config import Config
 
 Config.set('graphics', 'width', '480')
@@ -62,7 +62,10 @@ class NsConv(BoxLayout):
     def convert(self):
         # print(f'Convert {self.inp} <{self.val_inpsys}> --> <{self.val_outsys}>')
         if self.inp:
-            self.out = conv.transform(self.inp, self.val_inpsys, self.val_outsys)
+            if self.val_inpsys == 0xFFFF:
+                self.out = conv.transform(self.inp, 'ascii', self.val_outsys)
+            else:
+                self.out = conv.transform(self.inp, self.val_inpsys, self.val_outsys)
         else:
             self.out = ''
 

@@ -13,11 +13,14 @@
         font_size: 14
         text: root.inp
 
+<BLabel@Label+Border>
 <B2Label@Label+Border2>
 <B3Label@Label+Border3>
+<B3ScrollView@ScrollView+Border3>
 <LabelRes@GridLayout+Border>
     capt: lbl_capt.text
     out: lbl_res.text
+    lbl_capt: lbl_capt
 #    orientation: 'vertical'
     rows: 2
     padding: dp(5)
@@ -26,19 +29,27 @@
         text: root.capt
         size_hint_y: None
         height: self.texture_size[1]
-    Label:
-        id: lbl_res
-        canvas.before:
-            Color:
-                rgb: (.5, .5, .5)
-            Rectangle:
-                size: self.size
-                pos: self.pos
-        text: root.out
-        text_size: self.size[0] - dp(5), self.size[1] - dp(5)
-        valign: 'top'
-        color: 1,1,0,1
-        bold: True
+    B3ScrollView:
+        do_scroll_x: False
+        do_scroll_y: True
+        bar_width: 4
+#        viewport_size: 1, 1
+        BLabel:
+            id: lbl_res
+#            canvas.before:
+#                Color:
+#                    rgb: (.5, .5, .5)
+#                Rectangle:
+#                    size: self.size
+#                    pos: self.pos
+            text: root.out
+            size_hint_y: None
+            height: self.texture_size[1]
+            text_size: self.width, None
+            padding: 10, 10
+            color: 1,1,0,1
+            bold: True
+#            on_touch_down: print(root, root.lbl_capt.texture_size, root.minimum_size)
 
 <CToggButt@ToggleButton>
     group: root.group
@@ -117,7 +128,7 @@
             Line:
                 rectangle: (self.x, self.y, self.width, self.height)
         orientation: 'horizontal'
-        size_hint_y: .4
+        size_hint_y:.3
         Button:
             id: butt_clear
             text: 'Очистить'
@@ -133,12 +144,14 @@
         capt: 'Из'
         group: 'inpsys'
         val: root.val_inpsys
+        size_hint_y: .4
 
     ToggButtGroup:
         id: tbg_to
         capt: 'В'
         group: 'outsys'
         val: root.val_outsys
+        size_hint_y: .4
 
 #--------------------------------------------------------------------
 

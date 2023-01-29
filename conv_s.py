@@ -57,27 +57,33 @@ def show_help():
     print('На входе: 1) число для преобразования. 2) Система счисления входного числа. 3) В какую систему переводить')
 
 
-def transform(s_inp, s_ins, s_outs):
-    # if not all([c.isdigit for c in s_outs]):
-    #     return 'Output system must be a number'
-    # if check_inp_num_and_sys(s_inp, s_ins):
-        res10 = in_numsys_10(s_inp, int(s_ins))
-        res = from_numsys_10(res10, int(s_outs))
-        return res
+def transform(s_inp, s_ins, s_outs, is_needcheck=False):
+    if is_needcheck:
+        if not all([c.isdigit for c in s_outs]):
+            return 'Output system must be a number'
+        if not check_inp_num_and_sys(s_inp, s_ins):
+            return 'Invalid input'
+    else:
+        if s_ins == 'ascii':
+            symbs = [ord(c) for c in s_inp]
+            return ' '.join(from_numsys_10(s, int(s_outs)) for s in symbs)
+        else:
+            res10 = in_numsys_10(s_inp, int(s_ins))
+            return from_numsys_10(res10, int(s_outs))
     # return False
 
 
 if __name__ == '__main__':
-    res = ''
-
-    inp_list = sys.argv
-    if len(inp_list) != 4:
-        show_help()
-    else:
-        res = transform(inp_list[1], inp_list[2], inp_list[3])
-    if res:
-        print(res)
-    input('Enter to exit')
-
+    # res = ''
+    #
+    # inp_list = sys.argv
+    # if len(inp_list) != 4:
+    #     show_help()
+    # else:
+    #     res = transform(inp_list[1], inp_list[2], inp_list[3], is_needcheck=True)
+    # if res:
+    #     print(res)
+    # input('Enter to exit')
+    print(transform('abc', 'ascii', 10))
 
 
