@@ -1,6 +1,5 @@
 import sys
 
-
 def get_max_dig(num):
     res, digval = -1, 0
     for d in num:

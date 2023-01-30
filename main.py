@@ -1,22 +1,25 @@
 # import kivy
 from kivy.app import App
-from kivy.uix.widget import Widget
+# from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
-from kivy.properties import ObjectProperty, StringProperty, NumericProperty
+from kivy.properties import ObjectProperty, StringProperty, NumericProperty, BooleanProperty
+from kivy.uix.textinput import TextInput
+from kivy.metrics import dp, sp
 
 import conv_s as conv
-from kivy.effects.opacityscroll import OpacityScrollEffect
+# from kivy.effects.opacityscroll import OpacityScrollEffect
 from kivy.config import Config
+from kivy.app import Factory
 
 # Указываем пользоваться системным методом ввода, использующимся на
 # платформе, в которой запущенно приложение.
-# Config.set("kivy", "keyboard_mode", "system")
+Config.set("kivy", "keyboard_mode", "system")
     # Activity баг репорта.
 # https://habr.com/ru/post/300960/ -- тут пример файла main.py для сборки под ведро с логом ошибок запуска
 
 
-Config.set('graphics', 'width', '480')
-Config.set('graphics', 'height', '640')
+# Config.set('graphics', 'width', '480')
+# Config.set('graphics', 'height', '640')
 
 
 def showdic(dic):
@@ -38,6 +41,11 @@ class NsConv(BoxLayout):
     tbg_to = ObjectProperty()
     val_inpsys = NumericProperty()
     val_outsys = NumericProperty()
+    lb_debug = ObjectProperty()
+    cti = ObjectProperty()
+    ti = ObjectProperty()
+    tifocus = BooleanProperty()
+
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -48,6 +56,22 @@ class NsConv(BoxLayout):
         self.tb_out_lst = [self.ids.tbg_to.ids[tb].__self__ for tb in self.ids.tbg_to.ids if tb.startswith('tb')]
         self.tb_inp_lst[2].state = 'down'
         self.tb_out_lst[0].state = 'down'
+        self.lb_debug.text = 'Info for debugging'
+        self.ti = self.cti.ids['ti'].__self__
+        self.ti.focus = True
+
+    def set_focus_on_ti(self):
+        self.cti.ids.ti.focus = True
+
+    def showdebug(self, *args):
+        print(self.height, self.width)
+        self.lb_debug.text = f'N:{self.height}, {self.width} -- DP:{dp(self.height)}, {dp(self.width)} -- \'' \
+                             f'SP:{sp(self.height)}, {sp(self.width)}'
+
+    def clr(self):
+        self.lb_debug.text = '...'
+        self.inp = ''
+
 
     def on_inp(self, instance, text):
         maxdig = conv.get_max_dig(text)
@@ -64,10 +88,10 @@ class NsConv(BoxLayout):
                     self.tb_inp_lst[-1].state = 'down'
                 b.disabled = False
         self.convert()
-        # self.out = self.inp
 
     def convert(self):
         # print(f'Convert {self.inp} <{self.val_inpsys}> --> <{self.val_outsys}>')
+
         if self.inp:
             if self.val_inpsys == 0xFFFF:
                 self.out = conv.transform(self.inp, 'ascii', self.val_outsys)
@@ -77,12 +101,13 @@ class NsConv(BoxLayout):
             self.out = ''
 
     def on_val_inpsys(self, *args):
-        # print('a')
         self.convert()
+        self.set_focus_on_ti()
 
     def on_val_outsys(self, *args):
-        # print('b')
         self.convert()
+        self.set_focus_on_ti()
+
 
 class NsConvApp(App):
     title = 'Конвертер систем счисления'

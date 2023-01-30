@@ -10,14 +10,15 @@
         height: self.texture_size[1]
     TextInput:
         id: ti
-        font_size: 14
+#        font_size: 14
         text: root.inp
 
 <BLabel@Label+Border>
 <B2Label@Label+Border2>
 <B3Label@Label+Border3>
 <B3ScrollView@ScrollView+Border3>
-<LabelRes@GridLayout+Border>
+
+<LabelRes@GridLayout>
     capt: lbl_capt.text
     out: lbl_res.text
     lbl_capt: lbl_capt
@@ -29,12 +30,12 @@
         text: root.capt
         size_hint_y: None
         height: self.texture_size[1]
-    B3ScrollView:
+    ScrollView:
         do_scroll_x: False
         do_scroll_y: True
         bar_width: 4
 #        viewport_size: 1, 1
-        BLabel:
+        Label:
             id: lbl_res
 #            canvas.before:
 #                Color:
@@ -100,9 +101,11 @@
     butt_ascii: butt_ascii
     butt_clear: butt_clear
     inp: cti.inp
+    cti: cti
     out: outres.out
     val_inpsys: tbg_from.val
     val_outsys: tbg_to.val
+    lb_debug: lb_debug
     canvas:
         Color:
             rgb: (0,0,.2)
@@ -110,13 +113,22 @@
             size: self.size
             pos: self.pos
     orientation: 'vertical'
-    padding: dp(5)
+#    padding: padding_left=20, padding_top=20, padding_right=5, padding_bottom=20
+    padding: [dp(20), dp(5), dp(5), dp(20)]
     spacing: dp(5)
     outsys_name: 'Outsys'
-    CaptTextInput:
+    CaptTextInput:  #cti.ti.focus
         id: cti
         capt: 'Исходное число'
         inp: root.inp
+    BLabel:
+        id: lb_debug
+#        font_size: 20
+#        text: 'debug_info'
+        size_hint_y: None
+        height: self.texture_size[1] + 4
+        valign: 'middle'
+        on_touch_down: root.showdebug(self)
     LabelRes:
         id: outres
         capt: 'Результат'
@@ -132,7 +144,7 @@
         Button:
             id: butt_clear
             text: 'Очистить'
-            on_press: root.inp = ''
+            on_press: root.clr()
         CToggButt:
             id: butt_ascii
             text: 'ASCII -> ' + str(root.val_outsys)
