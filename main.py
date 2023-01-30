@@ -44,6 +44,10 @@ class NsConv(BoxLayout):
     cti = ObjectProperty()
     ti = ObjectProperty()
     tifocus = BooleanProperty()
+    VAL_NAMES_ = {2: ('Двоичной', 'Двоичную'), 8: ('Восьмеричной', 'Восьмеричную'),
+                 10: ('Десятичной', 'Десятичную'), 16: ('Шестнадцатеричной', 'Шестнадцатиричную')}
+    VAL_NAMES = {2: 'Двоичная', 8: 'Восьмеричная',
+                 10: 'Десятичная', 16: 'Шестнадцатиричная'}
 
 
     def __init__(self, **kwargs):
@@ -99,9 +103,13 @@ class NsConv(BoxLayout):
             self.out = ''
 
     def on_val_inpsys(self, *args):
+        self.cti.capt = f'Исходное число ({self.VAL_NAMES.get(self.val_inpsys, "ASCII")})'
+        self.tbg_from.capt = f'Из {self.VAL_NAMES_.get(self.val_inpsys, ("ASCII", 0))[0]}'
         self.convert()
 
     def on_val_outsys(self, *args):
+        self.outres.capt = f'Результат ({self.VAL_NAMES.get(self.val_outsys, "ASCII")})'
+        self.tbg_to.capt = f'В {self.VAL_NAMES_.get(self.val_outsys, (0, "ASCII"))[1]}'
         self.convert()
 
 

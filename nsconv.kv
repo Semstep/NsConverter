@@ -105,9 +105,12 @@
     butt_clear: butt_clear
     inp: cti.inp
     cti: cti
+    outres: outres
     out: outres.out
     val_inpsys: tbg_from.val
     val_outsys: tbg_to.val
+    tbg_from: tbg_from
+    tbg_to: tbg_to
 #    lb_debug: lb_debug
     canvas:
         Color:
@@ -120,11 +123,10 @@
     padding: [dp(20), dp(5), dp(5), dp(20)]
     spacing: dp(5)
 #    size_hint_y: .6
-    pos_hint: { 'top': 1}
+    pos_hint: {'top': 1}
     outsys_name: 'Outsys'
-    CaptTextInput:  #cti.ti.focus
+    CaptTextInput:
         id: cti
-        capt: 'Исходное число'
         inp: root.inp
         size_hint_y: .2
 #    BLabel:
@@ -137,7 +139,6 @@
 #        on_touch_down: print(app.root.size)
     LabelRes:
         id: outres
-        capt: 'Результат'
         out: root.out
         size_hint_y: .2
     BoxLayout:
