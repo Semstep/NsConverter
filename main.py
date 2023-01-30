@@ -56,7 +56,7 @@ class NsConv(BoxLayout):
         self.tb_inp_lst[2].state = 'down'
         self.tb_out_lst[0].state = 'down'
         # self.lb_debug.text = 'Info for debugging'
-        self.cti.ids['ti'].focus = True
+        # self.cti.ids['ti'].focus = True
 
     def ctb_released(self):
         ...

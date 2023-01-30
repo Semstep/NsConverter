@@ -10,7 +10,8 @@
         height: self.texture_size[1]
     TextInput:
         id: ti
-        font_size: dp(16)
+        font_size: dp(20)
+        bold: True
         text: root.inp
 
 <BLabel@Label+Border>
@@ -50,6 +51,7 @@
             padding: 10, 10
             color: 1,1,0,1
             bold: True
+            font_size: dp(20)
 #            on_touch_down: print(root, root.lbl_capt.texture_size, root.minimum_size)
 
 <CToggButt@ToggleButton>
@@ -117,12 +119,14 @@
 #    padding: padding_left=20, padding_top=20, padding_right=5, padding_bottom=20
     padding: [dp(20), dp(5), dp(5), dp(20)]
     spacing: dp(5)
+#    size_hint_y: .6
+    pos_hint: { 'top': 1}
     outsys_name: 'Outsys'
     CaptTextInput:  #cti.ti.focus
         id: cti
         capt: 'Исходное число'
         inp: root.inp
-        size_hint_y: .3
+        size_hint_y: .2
 #    BLabel:
 #        id: lb_debug
 ##        font_size: 20
@@ -135,15 +139,15 @@
         id: outres
         capt: 'Результат'
         out: root.out
-        size_hint_y: .3
+        size_hint_y: .2
     BoxLayout:
-        canvas:
-            Color:
-                rgb: (1,1,1)
-            Line:
-                rectangle: (self.x, self.y, self.width, self.height)
+#        canvas:
+#            Color:
+#                rgb: (1,1,1)
+#            Line:
+#                rectangle: (self.x, self.y, self.width, self.height)
         orientation: 'horizontal'
-        size_hint_y:.2
+        size_hint_y:.1
         Button:
             id: butt_clear
             text: 'Очистить'
@@ -160,15 +164,21 @@
         capt: 'Из'
         group: 'inpsys'
         val: root.val_inpsys
-        size_hint_y: .3
+        size_hint_y: .2
 
     ToggButtGroup:
         id: tbg_to
         capt: 'В'
         group: 'outsys'
         val: root.val_outsys
-        size_hint_y: .3
+        size_hint_y: .2
     Widget:
+#        canvas:
+#            Color:
+#                rgb: (0,0,.2)
+#            Rectangle:
+#                size: self.size
+#                pos: self.pos
         size_hint: None, .6
 
 #--------------------------------------------------------------------
