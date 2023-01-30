@@ -10,7 +10,7 @@
         height: self.texture_size[1]
     TextInput:
         id: ti
-#        font_size: 14
+        font_size: dp(16)
         text: root.inp
 
 <BLabel@Label+Border>
@@ -24,7 +24,7 @@
     lbl_capt: lbl_capt
 #    orientation: 'vertical'
     rows: 2
-    padding: dp(5)
+#    padding: dp(5)
     Label:
         id: lbl_capt
         text: root.capt
@@ -33,7 +33,7 @@
     ScrollView:
         do_scroll_x: False
         do_scroll_y: True
-        bar_width: 4
+        bar_width: 8
 #        viewport_size: 1, 1
         Label:
             id: lbl_res
@@ -57,7 +57,8 @@
     value: root.value
     allow_no_selection: False
 #    on_press: app.root.tgbutt_pressed(self, self.group, self.text)
-    on_press: value = self.value
+#    on_press: value = self.value
+#    on_release: app.root.ctb_released()
 
 <ToggButtGroup@BoxLayout>
     id: tbg
@@ -105,7 +106,7 @@
     out: outres.out
     val_inpsys: tbg_from.val
     val_outsys: tbg_to.val
-    lb_debug: lb_debug
+#    lb_debug: lb_debug
     canvas:
         Color:
             rgb: (0,0,.2)
@@ -121,18 +122,20 @@
         id: cti
         capt: 'Исходное число'
         inp: root.inp
-    BLabel:
-        id: lb_debug
-#        font_size: 20
-#        text: 'debug_info'
-        size_hint_y: None
-        height: self.texture_size[1] + 4
-        valign: 'middle'
-        on_touch_down: root.showdebug(self)
+        size_hint_y: .3
+#    BLabel:
+#        id: lb_debug
+##        font_size: 20
+##        text: 'debug_info'
+#        size_hint_y: None
+#        height: self.texture_size[1] + 4
+#        valign: 'middle'
+#        on_touch_down: print(app.root.size)
     LabelRes:
         id: outres
         capt: 'Результат'
         out: root.out
+        size_hint_y: .3
     BoxLayout:
         canvas:
             Color:
@@ -140,11 +143,12 @@
             Line:
                 rectangle: (self.x, self.y, self.width, self.height)
         orientation: 'horizontal'
-        size_hint_y:.3
+        size_hint_y:.2
         Button:
             id: butt_clear
             text: 'Очистить'
             on_press: root.clr()
+#            on_release: app.root.ctb_released()
         CToggButt:
             id: butt_ascii
             text: 'ASCII -> ' + str(root.val_outsys)
@@ -156,14 +160,16 @@
         capt: 'Из'
         group: 'inpsys'
         val: root.val_inpsys
-        size_hint_y: .4
+        size_hint_y: .3
 
     ToggButtGroup:
         id: tbg_to
         capt: 'В'
         group: 'outsys'
         val: root.val_outsys
-        size_hint_y: .4
+        size_hint_y: .3
+    Widget:
+        size_hint: None, .6
 
 #--------------------------------------------------------------------
 

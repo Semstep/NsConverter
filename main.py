@@ -13,13 +13,12 @@ from kivy.app import Factory
 
 # Указываем пользоваться системным методом ввода, использующимся на
 # платформе, в которой запущенно приложение.
-Config.set("kivy", "keyboard_mode", "system")
+# Config.set("kivy", "keyboard_mode", "system")
     # Activity баг репорта.
 # https://habr.com/ru/post/300960/ -- тут пример файла main.py для сборки под ведро с логом ошибок запуска
 
-
-# Config.set('graphics', 'width', '480')
-# Config.set('graphics', 'height', '640')
+Config.set('graphics', 'width', '480')
+Config.set('graphics', 'height', '640')
 
 
 def showdic(dic):
@@ -56,20 +55,19 @@ class NsConv(BoxLayout):
         self.tb_out_lst = [self.ids.tbg_to.ids[tb].__self__ for tb in self.ids.tbg_to.ids if tb.startswith('tb')]
         self.tb_inp_lst[2].state = 'down'
         self.tb_out_lst[0].state = 'down'
-        self.lb_debug.text = 'Info for debugging'
-        self.ti = self.cti.ids['ti'].__self__
-        self.ti.focus = True
+        # self.lb_debug.text = 'Info for debugging'
+        self.cti.ids['ti'].focus = True
 
-    def set_focus_on_ti(self):
-        self.cti.ids.ti.focus = True
+    def ctb_released(self):
+        ...
 
     def showdebug(self, *args):
         print(self.height, self.width)
-        self.lb_debug.text = f'N:{self.height}, {self.width} -- DP:{dp(self.height)}, {dp(self.width)} -- \'' \
+        self.lb_debug.text = f'N:{self.height}, {self.width} -- DP:{dp(self.height)}, {dp(self.width)} -- ' \
                              f'SP:{sp(self.height)}, {sp(self.width)}'
 
     def clr(self):
-        self.lb_debug.text = '...'
+        # self.lb_debug.text = '...'
         self.inp = ''
 
 
@@ -102,11 +100,9 @@ class NsConv(BoxLayout):
 
     def on_val_inpsys(self, *args):
         self.convert()
-        self.set_focus_on_ti()
 
     def on_val_outsys(self, *args):
         self.convert()
-        self.set_focus_on_ti()
 
 
 class NsConvApp(App):
@@ -120,9 +116,9 @@ if __name__ == '__main__':
     NsConvApp().run()
 
 """
-Траблы: в текстинпуте на ведре текст микроскопического размера
-большой размер АПК, мож венв исключить из компиляции, можно прописать в конфиге бильдозера
-появляющаяся клава скрывает кнопки преобразования
-не удаляется первый символ в текстинпуте при нажатии бекспейса на ведровой клаве
-Попробовать убрать размер экрана из начала файла
+Траблы: в текстинпуте на ведре текст микроскопического размера "+" Поставил дефолтный
+большой размер АПК, мож венв исключить из компиляции, можно прописать в конфиге бильдозера "-" ХЗ почему так
+появляющаяся клава скрывает кнопки преобразования "-" Возможное решение, клава появляется, когда появляется фокус в поле ввода
+не удаляется первый символ в текстинпуте при нажатии бекспейса на ведровой клаве "+" уже удаляется, хз что было
+Попробовать убрать размер экрана из начала файла "-" ничего не поменялось
 """
